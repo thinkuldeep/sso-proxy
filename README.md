@@ -56,7 +56,7 @@ http://localhost:3000/proxy?url=https://example.com/api/data&sslUrl=https://exam
 - `sslUrl`: (Optional) The SSO login page. If not provided, the proxy will attempt to use the same url.
 
 ## 📑 Examples
-1. [Get Claim History - MidiAssist Portal](/test/GetClaimHistory.html)
+1. [Get Claim History - MediAssist Portal - portal.mediassist.in](/docs/GetClaimHistory.html)
 
 
 

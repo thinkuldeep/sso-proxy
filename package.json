@@ -1,0 +1,26 @@
+{
+  "name": "sso-proxy",
+  "version": "1.0.0",
+  "description": "Proxy implementation for accessing APIs, Websites with SSO.",
+  "main": "proxy.js",
+  "scripts": {
+    "test": "echo \"Error: no docs specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thinkuldeep/sso-proxy.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/thinkuldeep/sso-proxy/issues"
+  },
+  "homepage": "https://github.com/thinkuldeep/sso-proxy#readme",
+  "dependencies": {
+    "express": "^5.1.0",
+    "node-fetch": "^3.3.2",
+    "puppeteer": "^24.17.0"
+  }
+}

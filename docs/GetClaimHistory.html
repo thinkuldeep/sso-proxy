@@ -7,6 +7,7 @@
 </head>
 <body>
 <div class="dropdown-container">
+    <button class="side-button home-btn" onclick="window.location.href='index.html'"> &#x1F3E0; Home </button>
     <button class="side-button" onclick="drawTable();"> &#x1F504 Load Data</button>
 </div>
 
@@ -46,17 +47,21 @@
     var table;
 
     function drawTable() {
-        //table.clear().draw();
+        table.clear().draw();
         renderTable();
     }
 
     async function renderTable() {
         $('#loading').show();
-        const response = await fetch(`${PROXY_URL}?url=${API_URL_GET_CLAIMS}&ssoUrl=${SSO_URL}`);
-        const jsonData = (await response.json()).SearchResults || [];
-        jsonData.forEach(row => {
-            table.row.add(row).draw();
-        });
+        try {
+            const response = await fetch(`${PROXY_URL}?url=${API_URL_GET_CLAIMS}&ssoUrl=${SSO_URL}`);
+            const jsonData = (await response.json()).SearchResults || [];
+            jsonData.forEach(row => {
+                table.row.add(row).draw();
+            });
+        } catch (error) {
+            console.error(error);
+        }
         $('#loading').hide();
     }
 

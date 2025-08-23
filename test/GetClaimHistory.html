@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SSO - Get MediAssit Claims</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="dropdown-container">
+    <button class="side-button" onclick="drawTable();"> &#x1F504 Load Data</button>
+</div>
+
+<div id="loading" style="display: none; text-align:center;">
+    <div class="spinner"></div>
+</div>
+
+<table id="dataTable" class="display">
+    <thead>
+    <tr>
+        <th>Type</th>
+        <th>BeneficiaryName</th>
+        <th>ClaimStatus</th>
+        <th>ClaimedAmount</th>
+        <th>PolHolderName</th>
+    </tr>
+    </thead>
+    <tfoot>
+    <tr>
+        <th><input type="text" placeholder="Search Type"/></th>
+        <th><input type="text" placeholder="Search BeneficiaryName"/></th>
+        <th><input type="text" placeholder="Search ClaimStatus"/></th>
+        <th><input type="text" placeholder="Search ClaimedAmount"/></th>
+        <th><input type="text" placeholder="Search PolHolderName"/></th>
+    </tr>
+    </tfoot>
+    <tbody></tbody>
+</table>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script >
+    const PROXY_URL = 'http://localhost:3001/sso-proxy';
+    const SSO_URL = 'https://portal.mediassist.in/Claims.aspx';
+    const API_URL_GET_CLAIMS = 'https://portal.mediassist.in/ServiceCalls/GetClaims.aspx';
+
+    var table;
+
+    function drawTable() {
+        //table.clear().draw();
+        renderTable();
+    }
+
+    async function renderTable() {
+        $('#loading').show();
+        const response = await fetch(`${PROXY_URL}?url=${API_URL_GET_CLAIMS}&ssoUrl=${SSO_URL}`);
+        const jsonData = (await response.json()).SearchResults || [];
+        jsonData.forEach(row => {
+            table.row.add(row).draw();
+        });
+        $('#loading').hide();
+    }
+
+    $(document).ready(function() {
+
+        table = $('#dataTable').DataTable({
+            columns: [
+                {data: 'ClaimType'},
+                {data: 'BeneficiaryName'},
+                {data: 'ClaimStatus'},
+                {data: 'ClaimedAmount'},
+                {data: 'PolHolderName'}
+            ],
+            order: [[1, 'asc']]
+        });
+
+        // Apply column search
+        $('#dataTable tfoot input').on('keyup change', function () {
+            const index = $(this).parent().index();
+            table.column(index).search(this.value).draw();
+        });
+
+        drawTable();
+    });
+</script>
+</body>
+</html>

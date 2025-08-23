@@ -1,40 +1,171 @@
+:not(:defined) > * {
+  display: none;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
+.menu-button {
+  white-space: nowrap;
+  font-family: Roboto Regular, Helvetica Neue, sans-serif;
+  font-size: 14px;
+  color:#4285f4;
+  border-radius: 18px;
+  border: 1px solid #DADCE0;
+  line-height: 24px;
+  align-content: center ;
+  text-align: center;
+  padding: 5px 20px
+}
+.menu-button a {
+  text-decoration: none;
+  color: #4285f4;
+}
+
+.menu-button:active {
+  background-color: #E8EAED;
+}
+
+.menu-button:focus {
+  outline: none;
+}
+
+.menu-button:focus-visible {
+  outline: 1px solid #4285f4;
+}
+
+/* Add a black background color to the top navigation */
+.topnav {
+  background-color: #333;
+  font-family: Roboto Regular, Helvetica Neue, sans-serif;
+  overflow: hidden;
+}
+
+/* Style the links inside the navigation bar */
+.topnav a {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+/* Change the color of links on hover */
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+/* Add an active class to highlight the current page */
+.topnav a.active {
+  background-color: #04AA6D;
+  color: white;
+}
+
+/* Hide the link that should open and close the topnav on small screens */
+.topnav .icon {
+  display: none;
+}
+
+/* When the screen is less than 600 pixels wide, hide all links, except for the first one ("Home"). Show the link that contains should open and close the topnav (.icon) */
+@media screen and (max-width: 600px) {
+  .topnav a:not(:first-child) {display: none;}
+  .topnav a.icon {
+    float: right;
+    display: block;
+  }
+}
+
+/* The "responsive" class is added to the topnav with JavaScript when the user clicks on the icon. This class makes the topnav look good on small screens (display the links vertically instead of horizontally) */
+@media screen and (max-width: 600px) {
+  .topnav.responsive {position: relative;}
+  .topnav.responsive a.icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .topnav.responsive a {
+    float: none;
+    display: block;
+    text-align: left;
+  }
+}
+
+/* Create two equal columns that floats next to each other */
+.column {
+  float: left;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid;
+}
+
+.column img {
+  margin-top: 12px;
+  text-align: center;
+  width: 400px;
+  height: 400px;
+}
+
+.column img:hover {
+  border: #04AA6D 1px solid;
+}
+
+.column a {
+  text-decoration: none;
+  text-align: center;
+  float: left;
+  font-family: Roboto Regular, Helvetica Neue, sans-serif;
+  color: #04AA6D;
+}
+
+  /* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
 table {
-    width: 100%;
-    margin-top: 20px;
+  width: 100%;
+  margin-top: 20px;
 }
 
 tfoot input {
-    width: 100%;
-    box-sizing: border-box;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .dropdown-container {
-    display: flex;
-    justify-content: right;
-    padding: 10px;
+  display: flex;
+  justify-content: right;
+  padding: 10px;
 }
 
 .navigation, label {
-    height: 20px;
-    padding: 10px;
+  height: 20px;
+  padding: 10px;
 }
 
 .side-button {
-    margin: 1px 5px 1px 5px;
+  margin: 1px 5px 1px 5px;
 }
 
 .spinner {
-    border: 6px solid #eee;
-    border-top: 6px solid #3498db;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    margin: auto;
-    animation: spin 1s linear infinite;
+  border: 6px solid #eee;
+  border-top: 6px solid #3498db;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  margin: auto;
+  animation: spin 1s linear infinite;
 }
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
-
-

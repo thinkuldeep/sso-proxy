@@ -2,14 +2,27 @@
 <html>
 <head>
     <title>SSO - Get MediAssit Claims</title>
+    <meta charset="utf-8">
+    <meta name="description" content="Get Claim History - MediAssist Portal">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="styles.css">
+    <link type="text/css" href="styles.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://unpkg.com/focus-visible@5.0.2/dist/focus-visible.js" defer></script>
 </head>
 <body>
-<div class="dropdown-container">
-    <button class="side-button home-btn" onclick="window.location.href='index.html'"> &#x1F3E0; Home </button>
-    <button class="side-button" onclick="drawTable();"> &#x1F504 Load Data</button>
+
+<div class="topnav" id="myTopnav">
+    <a href="index.html">Home</a>
+    <a href="GetClaimHistory.html" class="active">MediAssist Portal</a>
+    <a href="https://github.com/thinkuldeep/sso-proxy/" >Github Source</a>
+    <a href="https://thinkuldeep.com/" >thinkuldeep.com</a>
+    <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+        <i class="fa fa-bars"></i>
+    </a>
 </div>
+
+<h3>Get Claim History - <a href="https://portal.mediassist.in/"> MediAssist Portal</a></h3>
 
 <div id="loading" style="display: none; text-align:center;">
     <div class="spinner"></div>
@@ -36,6 +49,11 @@
     </tfoot>
     <tbody></tbody>
 </table>
+
+<div class="row">
+    <p>Make sure the proxy is running at <a href="http://localhost:3001/sso-proxy">http://localhost:3001/sso-proxy</a>.
+        Refer Guide <a href="https://github.com/thinkuldeep/sso-proxy/blob/main/README.md"> here </a> </p>
+</div>
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
@@ -87,5 +105,6 @@
         drawTable();
     });
 </script>
+<script src="script.js"></script>
 </body>
 </html>

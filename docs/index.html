@@ -1,14 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>SSO Proxy Tests</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+  <head>
+    <title>SSO-Proxy</title>
+    <meta charset="utf-8">
+    <meta name="description" content="Proxy for SSO">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link type="text/css" href="styles.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <!-- OPTIONAL: The :focus-visible polyfill removes the focus ring for some input types -->
+    <script src="https://unpkg.com/focus-visible@5.0.2/dist/focus-visible.js" defer></script>
+  </head>
+  <body>
 
-<h1>SSO Proxy</h1>
-<ol>
-  <li><a href="GetClaimHistory.html" class="side-button"> Get Claim History - MediAssist Portal - portal.mediassist.in</a></li>
-</ol>
-</body>
+  <div class="topnav" id="myTopnav">
+      <a href="index.html" class="active">Home</a>
+      <a href="GetClaimHistory.html" >MediAssist Portal</a>
+      <a href="https://github.com/thinkuldeep/sso-proxy/" >Github Source</a>
+      <a href="https://thinkuldeep.com/" >thinkuldeep.com</a>
+      <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+          <i class="fa fa-bars"></i>
+      </a>
+  </div>
+
+  <div class="row">
+      <div class="column">
+          <a href="GetClaimHistory.html">Get Claim History - MediAssist Portal - portal.mediassist.in </a>
+      </div>
+  </div>
+  <div class="row">
+      <p>Make sure the proxy is running at <a href="http://localhost:3001/sso-proxy">http://localhost:3001/sso-proxy</a>.
+          Refer Guide <a href="https://github.com/thinkuldeep/sso-proxy/blob/main/README.md"> here </a> </p>
+  </div>
+  <script src="script.js"></script>
+  </body>
 </html>

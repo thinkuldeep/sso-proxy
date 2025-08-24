@@ -14,7 +14,6 @@ app.use((req, res, next) => {
     next();
 });
 
-var loginSuccess = false;
 var page;
 var reqResContainer = {
     req : {query : {url : ""}},
@@ -27,43 +26,59 @@ var reqResContainer = {
     ssoURL : null
 }
 
-async function loadPage(url) {
-    const browser = await puppeteer.launch({
-        headless: false, // must be visible for login
-        defaultViewport: null
-    });
-    page = await browser.newPage();
+let loggedInHostMap = new Map();
 
-    page.on('response', async (response) => {
-        const url = response.url();
-        if  (reqResContainer.req.query.ssoUrl && url.startsWith(reqResContainer.req.query.ssoUrl) && response.status() === 200) {
-            loginSuccess = true;
-            console.log('Logged in, now waiting for API call...');
-        }
-        if (url.startsWith(reqResContainer.req.query.url) && response.status() === 200) {
-            if(!reqResContainer.req.query.ssoUrl){ // no separate SSO URL, so we are done after this call
-                loginSuccess = true;
-                console.log('Logged in');
+function getHost(url) {
+    try {
+        const parsedUrl = new URL(url);
+        return parsedUrl.host;
+    } catch (error) {
+        console.error('Invalid URL:', url);
+        return null;
+    }
+}
+
+async function loadPage(url) {
+    if(!page) {
+        const browser = await puppeteer.launch({
+            headless: false, // must be visible for login
+            defaultViewport: null
+        });
+        page = await browser.newPage();
+
+        page.on('response', async (response) => {
+            const url = response.url();
+            const ssoURl = reqResContainer.req.query.ssoUrl;
+            const targetURL = reqResContainer.req.query.url;
+            if  (ssoURl && url.startsWith(ssoURl) && response.status() === 200) {
+                loggedInHostMap.set(getHost(targetURL), true);
+                console.log('Logged in, now waiting for API call...');
             }
-            console.log('API call detected: ' + url);
-            try {
-                const contentType = response.headers()['content-type'] || '';
-                console.log( contentType + ' response detected');
-                if(contentType.includes("application/json")){
-                    data = await response.json();
-                    reqResContainer.res.json(data);
-                } else if(contentType.includes("png")) {
-                    data  = await response.buffer();
-                    reqResContainer.res.type(contentType).send(data);
-                } else  {
-                    data  = await response.text();
-                    reqResContainer.res.type(contentType).send(data);
+            if (url.startsWith(targetURL) && response.status() === 200) {
+                if(!ssoURl){ // no separate SSO URL, so we are done after this call
+                    loggedInHostMap.set(getHost(targetURL), true);
+                    console.log('Logged in');
                 }
-            } catch (err) {
-                console.error('Failed to parse API response', err);
+                console.log('API call detected: ' + url);
+                try {
+                    const contentType = response.headers()['content-type'] || '';
+                    console.log( contentType + ' response detected');
+                    if(contentType.includes("application/json")){
+                        data = await response.json();
+                        reqResContainer.res.json(data);
+                    } else if(contentType.includes("png")) {
+                        data  = await response.buffer();
+                        reqResContainer.res.type(contentType).send(data);
+                    } else  {
+                        data  = await response.text();
+                        reqResContainer.res.type(contentType).send(data);
+                    }
+                } catch (err) {
+                    console.error('Failed to parse API response', err);
+                }
             }
-        }
-    });
+        });
+    }
 
     console.log('Navigating to URL...:' + url);
     await page.goto(url, {
@@ -74,15 +89,19 @@ async function loadPage(url) {
     await page.waitForNavigation({ waitUntil: 'networkidle2', timeout: 60000 });
 }
 
+
+
 app.get('/sso-proxy', async (req, res) => {
     try {
+
         const ssoURL =  req.query.ssoUrl;
         const targetURL = req.query.url;
+
         reqResContainer.req = req;
         reqResContainer.res = res;
         console.log(`Get - ${req.query.url} ${ssoURL}`);
 
-        if(loginSuccess) {
+        if(loggedInHostMap.has(getHost(targetURL))) {
             console.log('Already logged in, accessing URL directly...');
             await page.goto(targetURL, {
                 waitUntil: 'domcontentloaded'
@@ -90,6 +109,7 @@ app.get('/sso-proxy', async (req, res) => {
         } else {
             await loadPage(ssoURL ? ssoURL : targetURL);
             if(ssoURL) {
+                console.log('Accessing targetURL now...');
                 //load target URL after login
                 await page.goto(targetURL, {
                     waitUntil: 'domcontentloaded'

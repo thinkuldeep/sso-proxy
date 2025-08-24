@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>SSO - Get MediAssit Claims</title>
+    <title>SSO - Get Job Posting At TW</title>
     <meta charset="utf-8">
-    <meta name="description" content="Get Claim History - MediAssist Portal">
+    <meta name="description" content="Get Job Posting at Thoughtworks - Refer Portal">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <link type="text/css" href="styles.css" rel="stylesheet"/>
@@ -14,15 +14,16 @@
 
 <div class="topnav" id="myTopnav">
     <a href="index.html">Home</a>
-    <a href="GetClaimHistory.html" class="active">MediAssist Portal</a>
-    <a href="JobsAtTW.html">Jobs@TW</a>
+    <a href="GetClaimHistory.html">MediAssist Portal</a>
+    <a href="JobsAtTW.html" class="active">Jobs@TW</a>
+    <a href="https://github.com/thinkuldeep/sso-proxy/" >Github Source</a>
     <a href="https://thinkuldeep.com/" >thinkuldeep.com</a>
     <a href="javascript:void(0);" class="icon" onclick="myFunction()">
         <i class="fa fa-bars"></i>
     </a>
 </div>
 
-<h3>Get Claim History - <a href="https://portal.mediassist.in/"> MediAssist Portal</a></h3>
+<h3>Get Job Posting @ <a href="https://refer.recruiting.thoughtworks.net/"> Thoughtworks Refer Portal</a></h3>
 
 <div id="loading" style="display: none; text-align:center;">
     <div class="spinner"></div>
@@ -31,20 +32,18 @@
 <table id="dataTable" class="display">
     <thead>
     <tr>
-        <th>Type</th>
-        <th>BeneficiaryName</th>
-        <th>ClaimStatus</th>
-        <th>ClaimedAmount</th>
-        <th>PolHolderName</th>
+        <th>ID</th>
+        <th>Title</th>
+        <th>City</th>
+        <th>Country</th>
     </tr>
     </thead>
     <tfoot>
     <tr>
-        <th><input type="text" placeholder="Search Type"/></th>
-        <th><input type="text" placeholder="Search BeneficiaryName"/></th>
-        <th><input type="text" placeholder="Search ClaimStatus"/></th>
-        <th><input type="text" placeholder="Search ClaimedAmount"/></th>
-        <th><input type="text" placeholder="Search PolHolderName"/></th>
+        <th><input type="text" placeholder="Search ID"/></th>
+        <th><input type="text" placeholder="Search Title"/></th>
+        <th><input type="text" placeholder="Search City"/></th>
+        <th><input type="text" placeholder="Search Country"/></th>
     </tr>
     </tfoot>
     <tbody></tbody>
@@ -59,8 +58,8 @@
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 <script >
     const PROXY_URL = 'http://localhost:3001/sso-proxy';
-    const SSO_URL = 'https://portal.mediassist.in/Claims.aspx';
-    const API_URL_GET_CLAIMS = 'https://portal.mediassist.in/ServiceCalls/GetClaims.aspx';
+    const SSO_URL = 'https://refer.recruiting.thoughtworks.net/';
+    const API_URL_GET_JOBS = 'https://refer.recruiting.thoughtworks.net/api/job-posts';
 
     var table;
 
@@ -72,8 +71,8 @@
     async function renderTable() {
         $('#loading').show();
         try {
-            const response = await fetch(`${PROXY_URL}?url=${API_URL_GET_CLAIMS}&ssoUrl=${SSO_URL}`);
-            const jsonData = (await response.json()).SearchResults || [];
+            const response = await fetch(`${PROXY_URL}?url=${API_URL_GET_JOBS}&ssoUrl=${SSO_URL}`);
+            const jsonData = (await response.json()) || [];
             jsonData.forEach(row => {
                 table.row.add(row).draw();
             });
@@ -87,11 +86,10 @@
 
         table = $('#dataTable').DataTable({
             columns: [
-                {data: 'ClaimType'},
-                {data: 'BeneficiaryName'},
-                {data: 'ClaimStatus'},
-                {data: 'ClaimedAmount'},
-                {data: 'PolHolderName'}
+                {data: 'job_id'},
+                {data: 'title'},
+                {data: 'city'},
+                {data: 'country'}
             ],
             order: [[1, 'asc']]
         });

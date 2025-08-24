@@ -57,7 +57,7 @@ http://localhost:3000/proxy?url=https://example.com/api/data&sslUrl=https://exam
 
 ## 📑 Examples
 1. [Get Claim History - MediAssist Portal - portal.mediassist.in](/docs/GetClaimHistory.html)
-
+2. [Get Job Posting from TW Portal](/docs/JobsAtTW.html)
 
 
 ## ⚠️ Troubleshooting

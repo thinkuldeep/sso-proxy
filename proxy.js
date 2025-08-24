@@ -48,15 +48,17 @@ async function loadPage(url) {
 
         page.on('response', async (response) => {
             const url = response.url();
+            console.log("on response : " + url + " " + response.status());
             const ssoURl = reqResContainer.req.query.ssoUrl;
             const targetURL = reqResContainer.req.query.url;
-            if  (ssoURl && url.startsWith(ssoURl) && response.status() === 200) {
-                loggedInHostMap.set(getHost(targetURL), true);
+            const  host = getHost(targetURL);
+            if  (!loggedInHostMap.has(host) && ssoURl && url.startsWith(ssoURl) &&  (response.status() === 200 || response.status() === 304)) {
+                loggedInHostMap.set(host, true);
                 console.log('Logged in, now waiting for API call...');
             }
-            if (url.startsWith(targetURL) && response.status() === 200) {
+            if (url.startsWith(targetURL) && (response.status() === 200 || response.status() === 304)) {
                 if(!ssoURl){ // no separate SSO URL, so we are done after this call
-                    loggedInHostMap.set(getHost(targetURL), true);
+                    loggedInHostMap.set(host, true);
                     console.log('Logged in');
                 }
                 console.log('API call detected: ' + url);

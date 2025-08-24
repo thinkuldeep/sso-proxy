@@ -58,7 +58,7 @@
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 <script >
     const PROXY_URL = 'http://localhost:3001/sso-proxy';
-    const SSO_URL = 'https://refer.recruiting.thoughtworks.net/';
+   // const SSO_URL = 'https://refer.recruiting.thoughtworks.net/';
     const API_URL_GET_JOBS = 'https://refer.recruiting.thoughtworks.net/api/job-posts';
 
     var table;
@@ -71,7 +71,7 @@
     async function renderTable() {
         $('#loading').show();
         try {
-            const response = await fetch(`${PROXY_URL}?url=${API_URL_GET_JOBS}&ssoUrl=${SSO_URL}`);
+            const response = await fetch(`${PROXY_URL}?url=${API_URL_GET_JOBS}`);
             const jsonData = (await response.json()) || [];
             jsonData.forEach(row => {
                 table.row.add(row).draw();
